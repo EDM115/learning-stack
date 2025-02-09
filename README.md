@@ -1,5 +1,5 @@
 # learning-stack
-## aka how to learn a new tech stack in 4 weeks for my internship
+## aka how to learn a new tech stack in ~~4~~ **2** weeks for my internship
 React (Next.js), Fastify, Prisma, PostgreSQL and maybe InfluxDB
 
 ---
@@ -30,7 +30,8 @@ An application for tracking and analyzing fitness data, with features for storin
 ---
 
 ## Plan
-### Week 1
+I was supposed to make it in 4 weeks, but life's not predictable and I'm left with 2 weeks to learn and implement this stack.
+
 - Set up the project structure
 - Learn TypeScript
   - Types
@@ -49,7 +50,6 @@ An application for tracking and analyzing fitness data, with features for storin
 - Some components libraries (ex Chakra UI, shadcn/ui)
 - Just the appearance for Login+Register, Workout logs, Nutrition tracking and Analytics dashboard
 
-### Week 2
 - Learn Fastify
   - Routes
   - Middleware
@@ -65,7 +65,6 @@ An application for tracking and analyzing fitness data, with features for storin
 - Protect routes
 - Implement the routes in the app
 
-### Week 3
 - More Prisma
   - Relations
   - Optimizations
@@ -74,7 +73,6 @@ An application for tracking and analyzing fitness data, with features for storin
 - Integrate InfluxDB with Fastify
 - Charts to display the time-series data
 
-### Week 4
 - Better security practices
   - Token-based auth ?
 - Fully functional workout and nutrition logging
