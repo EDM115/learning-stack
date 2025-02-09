@@ -160,3 +160,4 @@ console.log(`The direction is : ${go}`);
 
 ## Sources
 - [Fireship - "TypeScript - The Basics"](https://www.youtube.com/watch?v=ahCwqrYpIuM)
+- [Programming with Mosh - "TypeScript Tutorial for Beginners"](https://www.youtube.com/watch?v=d56mG7DezGs)
