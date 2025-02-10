@@ -1,5 +1,4 @@
 # TypeScript
-
 TypeScript is JavaScript + types. A JS code is a TS code as well. TS transpiles to JS (ability to specify a target version of JS).  
 `tsc file.ts` to compile a TypeScript file.  
 `tsc --init` to create a `tsconfig.json` file.  

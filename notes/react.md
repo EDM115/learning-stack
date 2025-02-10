@@ -1,5 +1,4 @@
 # React
-
 React was made to ease UI development.  
 Uses a virtual DOM to update the actual DOM.
 
@@ -32,15 +31,22 @@ function Component({ name }) {
 export default Component;
 ```
 
-### CSS classes  
+### CSS classes
 `class` is a JS keyword, so `className` is used in JSX.
 
-### Multiline  
+### Multiline
 We need to wrap the JSX in parentheses to use multiple lines in the return statement.
 
-### Multiple elements (like a list)  
+### Purity
+Components should be pure, the same input should always return the same output.
+- A component should only return JSX.
+- A component shouldn't change stuff that existed before rendering.
+To avoid this, we can use Strict Mode to detect side effects during dev. Usually by wrapping the app in `<React.StrictMode>` in the `main.tsx`.
+
+### Multiple elements (like a list)
 There's no for loop or any other loop in JSX.  
 So instead, we can use built-in JS functions like `map` to loop through an array and return JSX elements.  
+Also we need to add a `key` prop to each element to help React identify which items have changed, are added, or are removed.  
 Ex :
 ```tsx
 function Component() {
@@ -113,9 +119,11 @@ function Component() {
 
 export default Component;
 ```
+There is also `onChange` (ex an input), `onSubmit` (ex a form), ...
 
 ## State hook
-State is component-specific, so two `Component` components will have different states.
+State is component-specific, so two `Component` components will have different states.  
+`useState` takes an initial value and returns an array with the current state and a function to update it.
 ```tsx
 import { useState } from "react";
 
@@ -137,6 +145,138 @@ function Component() {
 
 export default Component;
 ```
+
+### Usecase : Controlled components
+A controlled component is a component where the value is controlled by the state.  
+Ex : an input field where the value is stored in the state.
+```tsx
+import { useState } from "react";
+
+function Component() {
+  const [name, setName] = useState("");
+
+  return (
+    <>
+      <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+      <button onClick={() => { console.log(name); }}>Log name</button>
+    </>
+  );
+}
+
+export default Component;
+```
+Here :
+1. The user types into the input, which calls setName with the new value.
+2. The name state is updated with the new value.
+3. The input value reads the new value from the state.
+
+## Context hook
+Context provides a way to pass data through the component tree without having to pass props down manually at every level.
+```tsx
+import { createContext, useContext } from "react";
+
+const ThemeContext = createContext("light");
+
+function Component() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar() {
+  const theme = useContext(ThemeContext);
+
+  return (
+    <div>
+      <h1>Theme : {theme}</h1>
+    </div>
+  );
+}
+
+export default Component;
+```
+
+## Ref hook
+Refs provide a way to access DOM nodes or React elements created in the render method.
+```tsx
+import { useRef } from "react";
+
+function Component() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <input type="text" ref={inputRef} />
+      <button onClick={handleClick}>Focus input</button>
+    </>
+  );
+}
+
+export default Component;
+```
+
+## Effect hook
+The effect hook adds the ability to perform side effects in function components, for example on component load.  
+Effects are code that reaches outside of React.
+```tsx
+import { useEffect } from "react";
+
+function Component() {
+  useEffect(() => {
+    console.log("Component mounted");
+
+    return () => {
+      console.log("Component unmounted");
+    };
+  }, []);
+
+  return (
+    <h1>Component</h1>
+  );
+}
+
+export default Component;
+```
+
+## Performance hooks
+- `useMemo` : memoizes a value, only recomputing it when one of the dependencies has changed.
+```tsx
+import { useMemo } from "react";
+
+function Component() {
+  const items = ["Alice", "Bob", "Charlie"];
+  const count = useMemo(() => items.length, [items]);
+
+  return (
+    <h1>Count : {count}</h1>
+  );
+}
+
+export default Component;
+```
+- `useCallback` : memoizes a callback, only recomputing it when one of the dependencies has changed.
+```tsx
+import { useCallback } from "react";
+
+function Component() {
+  const handleClick = useCallback(() => {
+    console.log("Clicked");
+  }, []);
+
+  return (
+    <button onClick={handleClick}>Click me</button>
+  );
+}
+
+export default Component;
+```
+Also check https://github.com/aidenybai/react-scan for a tool to find unnecessary re-renders.
 
 ## Props
 Props are passed from parent to child components.
@@ -256,6 +396,106 @@ function Component() {
 ## Rendering
 In the `main.tsx`, it's `ReactDOM` which is in charge of rendering the components.  
 It is also possible to use another renderer, like `react-native`.
+
+## Portals
+Portals provide a way to render children into a DOM node that exists outside the DOM hierarchy of the parent component (ex moving a component to another place in the DOM like modals, dropdowns or tooltips).
+```tsx
+import { createPortal } from "react-dom";
+
+function Component() {
+  return createPortal(
+    <h1>Portal</h1>,
+    document.getElementById("portal")
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Main App</h1>
+      <div id="portal"></div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+## Suspense
+Suspense lets components "wait" for something before rendering.  
+Useful when a component takes time to render or make API calls.
+```tsx
+import { Suspense, lazy } from "react";
+
+const LazyComponent = lazy(() => import("./LazyComponent"));
+
+function Component() {
+  return (
+    <Suspense fallback={<h1>Loading...</h1><Loading />}>
+      <LazyComponent />
+    </Suspense>
+  );
+}
+
+export default Component;
+```
+
+## Error boundaries
+Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of crashing the whole app.
+```tsx
+import { Component, ErrorInfo } from "react";
+
+interface State {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends Component {
+  state: State = {
+    hasError: false
+  };
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+```
+or
+```tsx
+import { ErrorBoundary } from "react-error-boundary";
+
+function ErrorFallback({ error }) {
+  return (
+    <div>
+      <h1>Something went wrong.</h1>
+      <pre>{error.message}</pre>
+    </div>
+  );
+}
+
+function Component() {
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <h1>Component</h1>
+    </ErrorBoundary>
+  );
+}
+
+export default Component;
+```
 
 ## Sources
 - [Programming with Mosh - "React Tutorial for Beginners"](https://www.youtube.com/watch?v=SqcY0GlETPk)
