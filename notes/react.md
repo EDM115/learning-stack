@@ -502,3 +502,4 @@ export default Component;
 - [Code Bootcamp - "Every React Concept Explained in 12 Minutes"](https://www.youtube.com/watch?v=wIyHSOugGGw)
 - [ByteGrad - "TypeScript in React - COMPLETE Tutorial (Crash Course)"](https://www.youtube.com/watch?v=TPACABQTHvM)
 - [Fireship - "10 React Hooks Explained // Plus Build your own from Scratch"](https://www.youtube.com/watch?v=TNhaISOUy6Q)
+- [Code Bootcamp - "Every React 19 Feature Explained in 8 Minutes"](https://www.youtube.com/watch?v=2NPIYnY3ilo)
