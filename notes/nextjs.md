@@ -168,6 +168,7 @@ export default function Button() {
   color: red;
 }
 ```
+Or better : use Tailwind CSS.
 
 ## Sources
 - [Fireship - "Next.js in 100 Seconds // Plus Full Beginner's Tutorial"](https://www.youtube.com/watch?v=Sklc_fQBmcs)
