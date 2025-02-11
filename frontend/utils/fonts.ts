@@ -11,8 +11,8 @@ export const comfortaa = Comfortaa({
   subsets: ["latin"]
 })
 
-export const fira_code = Fira_Code({
-  variable: "--font-fira-code",
+export const firaCode = Fira_Code({
+  variable: "--font-firaCode",
   subsets: ["latin"]
 })
 
@@ -26,7 +26,7 @@ export const nunito = Nunito({
   subsets: ["latin"]
 })
 
-export const nunito_sans = Nunito_Sans({
-  variable: "--font-nunito-sans",
+export const nunitoSans = Nunito_Sans({
+  variable: "--font-nunitoSans",
   subsets: ["latin"]
 })
