@@ -18,7 +18,7 @@ const ListItem = React.forwardRef<
   React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, ...props }, ref) => {
   return (
-    <li>
+    <li className="group">
       <NavigationMenuLink asChild>
         <a
           ref={ref}
@@ -29,7 +29,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-          <p className={`line-clamp-2 text-sm leading-snug text-muted-foreground ${nunitoSans.variable} font-[family-name:var(--font-nunitoSans)]`}>
+          <p className={`line-clamp-2 text-sm leading-snug group-hover:text-muted-foreground ${nunitoSans.variable} font-[family-name:var(--font-nunitoSans)]`}>
             {children}
           </p>
         </a>

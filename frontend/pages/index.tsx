@@ -27,13 +27,15 @@ export default function Home() {
           alt="TrackFit logo"
           width={180}
           height={180}
-          className="rounded-lg"
+          className="rounded-lg py-8"
           priority
         />
-        <h1 className="text-4xl font-bold">TrackFit</h1>
-        <p className="text-lg">
+        <h1 className="text-4xl font-bold py-8">TrackFit</h1>
+        <p className="text-lg text-center">
           TrackFit est un tracker de fitness qui vous aide à suivre vos séances
           d&apos;entraînement et vos progrès.
+          <br />
+          &copy; EDM115 - 2025
         </p>
       </main>
     </>
