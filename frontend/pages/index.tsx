@@ -1,8 +1,8 @@
 import Head from "next/head"
 import Image from "next/image"
-import { comfortaa } from "@/utils/fonts"
 
 import Navbar from "@/components/navbar"
+import { comfortaa } from "@/utils/fonts"
 
 export default function Home() {
   return (
@@ -13,10 +13,6 @@ export default function Home() {
           name="description"
           content="TrackFit"
         />
-        <link
-          rel="icon"
-          href="/trackfit_cropped.png"
-        />
       </Head>
       <Navbar />
       <main
@@ -25,8 +21,8 @@ export default function Home() {
         <Image
           src="/trackfit_upscaled.png"
           alt="TrackFit logo"
-          width={180}
-          height={180}
+          width={300}
+          height={300}
           className="rounded-lg py-8"
           priority
         />
