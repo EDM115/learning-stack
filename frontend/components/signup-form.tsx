@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import Link from "next/link"
 
-export function LoginForm({
+export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -17,7 +17,7 @@ export function LoginForm({
           <form className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Connexion</h1>
+                <h1 className="text-2xl font-bold">Inscription</h1>
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
@@ -29,24 +29,20 @@ export function LoginForm({
                 />
               </div>
               <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Mot de passe</Label>
-                  <a
-                    href="#"
-                    className="ml-16 text-sm underline-offset-2 hover:underline"
-                  >
-                    Mot de passe oublié ?
-                  </a>
-                </div>
+                <Label htmlFor="password">Mot de passe</Label>
+                <Input id="password" type="password" required />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="password">Confirmer le mot de passe</Label>
                 <Input id="password" type="password" required />
               </div>
               <Button type="submit" className="w-full">
-                Connexion
+                Inscription
               </Button>
               <div className="text-center text-sm">
-                Pas encore de compte ?{" "}
-                <Link href="/signup" className="underline underline-offset-4">
-                  Inscription
+                Déjà inscrit ?{" "}
+                <Link href="/login" className="underline underline-offset-4">
+                  Connexion
                 </Link>
               </div>
             </div>
