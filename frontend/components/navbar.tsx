@@ -135,19 +135,15 @@ export default function Navbar() {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            {currentPage === "/" ? (
-              <span className={selectedClasses}>Accueil</span>
-            ) : (
-              <Link
-                href="/"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Accueil
-                </NavigationMenuLink>
-              </Link>
-            )}
+            <Link
+              href={currentPage === "/" ? "" : "/"}
+              legacyBehavior
+              passHref
+            >
+              <NavigationMenuLink className={currentPage === "/" ? selectedClasses : navigationMenuTriggerStyle()}>
+                Accueil
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuTrigger
@@ -179,19 +175,15 @@ export default function Navbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            {currentPage === "/login" ? (
-              <span className={selectedClasses}>Connexion</span>
-            ) : (
-              <Link
-                href="/login"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Connexion
-                </NavigationMenuLink>
-              </Link>
-            )}
+            <Link
+              href={currentPage === "/login" ? "" : "/login"}
+              legacyBehavior
+              passHref
+            >
+              <NavigationMenuLink className={currentPage === "/login" ? selectedClasses : navigationMenuTriggerStyle()}>
+                Connexion
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
         {/* <ModeToggle /> */}
