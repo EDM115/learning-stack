@@ -51,9 +51,9 @@ const ListItem = React.forwardRef<
             </p>
           </span>
         ) : (
-          <a
+          <Link
             ref={ref}
-            href={href}
+            href={href ?? ""}
             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
             {...props}
           >
@@ -63,7 +63,7 @@ const ListItem = React.forwardRef<
             >
               {children}
             </p>
-          </a>
+          </Link>
         )}
       </NavigationMenuLink>
     </li>
