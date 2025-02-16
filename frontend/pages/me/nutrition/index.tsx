@@ -94,7 +94,11 @@ function Nutrition() {
                     <Button size="icon">
                       <Pencil />
                     </Button>
-                    <Button size="icon" className="ml-2" variant="destructive">
+                    <Button
+                      size="icon"
+                      className="ml-2"
+                      variant="destructive"
+                    >
                       <X />
                     </Button>
                   </TableCell>

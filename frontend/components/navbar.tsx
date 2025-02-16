@@ -140,7 +140,13 @@ export default function Navbar() {
               legacyBehavior
               passHref
             >
-              <NavigationMenuLink className={currentPage === "/" ? selectedClasses : navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={
+                  currentPage === "/"
+                    ? selectedClasses
+                    : navigationMenuTriggerStyle()
+                }
+              >
                 Accueil
               </NavigationMenuLink>
             </Link>
@@ -180,7 +186,13 @@ export default function Navbar() {
               legacyBehavior
               passHref
             >
-              <NavigationMenuLink className={currentPage === "/login" ? selectedClasses : navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={
+                  currentPage === "/login"
+                    ? selectedClasses
+                    : navigationMenuTriggerStyle()
+                }
+              >
                 Connexion
               </NavigationMenuLink>
             </Link>

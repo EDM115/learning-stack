@@ -14,7 +14,7 @@ import {
   LineChart as RechartsLineChart,
   PieChart as RechartsPieChart,
   Pie,
-  Cell,
+  Cell
 } from "recharts"
 
 import {
@@ -23,7 +23,7 @@ import {
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
-  type ChartConfig,
+  type ChartConfig
 } from "@/components/ui/chart"
 
 function Dashboard() {
@@ -33,59 +33,59 @@ function Dashboard() {
 
   const sessionsChartData = sessions.map((session) => ({
     day: session.day,
-    calories: session.calories,
+    calories: session.calories
   }))
 
   const sessionsChartConfig: ChartConfig = {
     calories: {
       label: "Calories dépensées",
-      color: "var(--chart-1)",
-    },
+      color: "var(--chart-1)"
+    }
   }
 
   const goalsChartData = goals.map((goal) => ({
     goal: goal.goal,
-    calories: goal.calories,
+    calories: goal.calories
   }))
 
   const goalsChartConfig: ChartConfig = {
     calories: {
       label: "Calories",
-      color: "var(--chart-2)",
-    },
+      color: "var(--chart-2)"
+    }
   }
 
   const nutritionChartData = [
     {
       key: "proteins",
       label: "Protéines",
-      value: nutrition.reduce((acc, item) => acc + item.proteins, 0),
+      value: nutrition.reduce((acc, item) => acc + item.proteins, 0)
     },
     {
       key: "carbs",
       label: "Glucides",
-      value: nutrition.reduce((acc, item) => acc + item.carbs, 0),
+      value: nutrition.reduce((acc, item) => acc + item.carbs, 0)
     },
     {
       key: "fats",
       label: "Lipides",
-      value: nutrition.reduce((acc, item) => acc + item.fats, 0),
-    },
+      value: nutrition.reduce((acc, item) => acc + item.fats, 0)
+    }
   ]
 
   const nutritionChartConfig: ChartConfig = {
     proteins: {
       label: "Protéines",
-      color: "var(--chart-3)",
+      color: "var(--chart-3)"
     },
     carbs: {
       label: "Glucides",
-      color: "var(--chart-4)",
+      color: "var(--chart-4)"
     },
     fats: {
       label: "Lipides",
-      color: "var(--chart-5)",
-    },
+      color: "var(--chart-5)"
+    }
   }
 
   return (
@@ -104,8 +104,14 @@ function Dashboard() {
         <h1>Dashboard</h1>
         <div className="w-full max-w-6xl p-4 shadow-md rounded-lg mb-8">
           <h2 className="text-2xl font-semibold mb-4">Séances</h2>
-          <ChartContainer config={sessionsChartConfig} className="min-h-[200px] w-full">
-            <RechartsBarChart accessibilityLayer data={sessionsChartData}>
+          <ChartContainer
+            config={sessionsChartConfig}
+            className="min-h-[200px] w-full"
+          >
+            <RechartsBarChart
+              accessibilityLayer
+              data={sessionsChartData}
+            >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="day"
@@ -114,14 +120,24 @@ function Dashboard() {
                 axisLine={false}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="calories" fill="var(--color-calories)" radius={4} />
+              <Bar
+                dataKey="calories"
+                fill="var(--color-calories)"
+                radius={4}
+              />
             </RechartsBarChart>
           </ChartContainer>
         </div>
         <div className="w-full max-w-6xl p-4 shadow-md rounded-lg mb-8">
           <h2 className="text-2xl font-semibold mb-4">Objectifs</h2>
-          <ChartContainer config={goalsChartConfig} className="min-h-[200px] w-full">
-            <RechartsLineChart accessibilityLayer data={goalsChartData}>
+          <ChartContainer
+            config={goalsChartConfig}
+            className="min-h-[200px] w-full"
+          >
+            <RechartsLineChart
+              accessibilityLayer
+              data={goalsChartData}
+            >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="goal"
@@ -141,10 +157,20 @@ function Dashboard() {
         </div>
         <div className="w-full max-w-6xl p-4 shadow-md rounded-lg mb-8">
           <h2 className="text-2xl font-semibold mb-4">Nutrition</h2>
-          <ChartContainer config={nutritionChartConfig} className="min-h-[200px] w-full">
-            <RechartsPieChart accessibilityLayer data={nutritionChartData}>
+          <ChartContainer
+            config={nutritionChartConfig}
+            className="min-h-[200px] w-full"
+          >
+            <RechartsPieChart
+              accessibilityLayer
+              data={nutritionChartData}
+            >
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Pie dataKey="value" data={nutritionChartData} label>
+              <Pie
+                dataKey="value"
+                data={nutritionChartData}
+                label
+              >
                 {nutritionChartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}

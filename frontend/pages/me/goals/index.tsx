@@ -60,8 +60,8 @@ function Goals() {
       <main
         className={`${nunitoSans.variable} font-[family-name:var(--font-nunitoSans)] flex flex-col items-center justify-center`}
       >
-        <h1>Mes objectifs
-
+        <h1>
+          Mes objectifs
           <Button className="ml-4 bg-white text-background hover:bg-muted/80">
             <Plus /> Ajouter un objectif
           </Button>
@@ -78,17 +78,21 @@ function Goals() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {getGoals().map(goal => (
+              {getGoals().map((goal) => (
                 <TableRow key={goal.id}>
                   <TableCell>{goal.goal}</TableCell>
                   <TableCell>{goal.duration}</TableCell>
                   <TableCell>{goal.calories}</TableCell>
                   <TableCell>{goal.weight}</TableCell>
                   <TableCell>
-                    <Button size="icon">                      
+                    <Button size="icon">
                       <Pencil />
                     </Button>
-                    <Button size="icon" className="ml-2" variant="destructive">
+                    <Button
+                      size="icon"
+                      className="ml-2"
+                      variant="destructive"
+                    >
                       <X />
                     </Button>
                   </TableCell>

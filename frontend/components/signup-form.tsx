@@ -11,7 +11,10 @@ export function SignupForm({
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+    >
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8">
@@ -30,18 +33,32 @@ export function SignupForm({
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Mot de passe</Label>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Confirmer le mot de passe</Label>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                />
               </div>
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+              >
                 Inscription
               </Button>
               <div className="text-center text-sm">
                 Déjà inscrit ?{" "}
-                <Link href="/login" className="underline underline-offset-4">
+                <Link
+                  href="/login"
+                  className="underline underline-offset-4"
+                >
                   Connexion
                 </Link>
               </div>
