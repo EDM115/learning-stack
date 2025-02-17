@@ -144,6 +144,8 @@ function Dashboard() {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
+                interval={0}
+                padding={{ left: 40, right: 30 }}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Line
@@ -169,7 +171,7 @@ function Dashboard() {
               <Pie
                 dataKey="value"
                 data={nutritionChartData}
-                label
+                label={({ label, value }) => `${label} : ${value}`}
               >
                 {nutritionChartData.map((entry, index) => (
                   <Cell

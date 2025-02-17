@@ -31,13 +31,6 @@
   --radius: 0.6rem;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: "Nunito Sans", Helvetica, sans-serif;
-  padding: 2rem;
-}
-
 .dark {
   --background: hsl(240 10% 3.9%);
   --foreground: hsl(0 0% 98%);
@@ -104,6 +97,13 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Nunito Sans", Helvetica, sans-serif;
+  padding: 2rem;
 }
 
 h1 {

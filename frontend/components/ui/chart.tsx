@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
+import { firaCode } from "@/utils/fonts"
 
 import { cn } from "@/lib/utils"
 
@@ -241,7 +242,7 @@ const ChartTooltipContent = React.forwardRef<
                         </span>
                       </div>
                       {item.value && (
-                        <span className="text-foreground font-mono font-medium tabular-nums">
+                        <span className={`text-foreground ${firaCode.variable} font-[family-name:var(--font-firaCode)] font-medium tabular-nums`}>
                           {item.value.toLocaleString()}
                         </span>
                       )}
@@ -352,9 +353,19 @@ function getPayloadConfigFromPayload(
     ] as string
   }
 
-  return configLabelKey in config
+  let itemConfig = configLabelKey in config
     ? config[configLabelKey]
     : config[key as keyof typeof config]
+
+  if (!itemConfig) {
+    itemConfig = {}
+  }
+
+  if (payloadPayload && "label" in payloadPayload) {
+    itemConfig.label = payloadPayload.label as string
+  }
+
+  return itemConfig
 }
 
 export {
