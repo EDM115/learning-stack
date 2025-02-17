@@ -62,7 +62,7 @@ function Goals() {
       >
         <h1>
           Mes objectifs
-          <Button className="ml-4 bg-white text-background hover:bg-muted/80">
+          <Button className="ml-4">
             <Plus /> Ajouter un objectif
           </Button>
         </h1>

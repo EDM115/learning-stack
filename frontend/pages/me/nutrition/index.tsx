@@ -63,7 +63,7 @@ function Nutrition() {
       >
         <h1>
           Ma nutrition
-          <Button className="ml-4 bg-white text-background hover:bg-muted/80">
+          <Button className="ml-4">
             <Plus />
             Ajouter un repas
           </Button>
