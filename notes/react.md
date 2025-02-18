@@ -497,6 +497,17 @@ function Component() {
 export default Component;
 ```
 
+## React 19
+- **Compiler** : Converts React code to JS, faster, simplifies the dev.
+- **No more memoization** (useMemo, useCallback) : Were needed to prevent re-renders, now React does it automatically.
+- **No more forwardRef** : Refs are automatically forwarded and can be used as any prop.
+- **New `use()` hook** : Loads resources asynchronously. Can replace `useEffect` and `useContext`. Better to use with Suspense.
+- **Directives** : Like in Next.JS, to add metadata to components (ex `use client`, `use server`).
+- **Actions** : Functions connected to the `action` prop of any form, can be run client or server side
+- **`useFormStatus`** : Allows to get info when submitting forms asynchronously, like "pending"
+- **`useFormState`** : Like useState but for Actions. Can be used to manage form state.
+- **`useOptimistic`** : Enables optimistic updates to the state, allowing for a responsive UI while waiting for server responses (ex update like counter before we actually got the response).
+
 ## Sources
 - [Programming with Mosh - "React Tutorial for Beginners"](https://www.youtube.com/watch?v=SqcY0GlETPk)
 - [Code Bootcamp - "Every React Concept Explained in 12 Minutes"](https://www.youtube.com/watch?v=wIyHSOugGGw)
