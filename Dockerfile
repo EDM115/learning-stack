@@ -7,9 +7,10 @@ LABEL org.opencontainers.image.source="https://github.com/EDM115/learning-stack.
 LABEL org.opencontainers.image.title="TrackFit"
 LABEL org.opencontainers.image.url="https://github.com/EDM115/learning-stack.git"
 
-ENV NODE_ENV=development
 ENV BACKEND_PORT=56001
 ENV FRONTEND_PORT=56000
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=development
 
 WORKDIR /app/
 
