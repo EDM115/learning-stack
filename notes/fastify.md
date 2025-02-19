@@ -7,9 +7,6 @@ Have a good ecosystem of plugins to extend its functionality.
 ```typescript
 import Fastify from "fastify"
 
-/**
- * @type {import("fastify").FastifyInstance} Instance of Fastify
- */
 const fastify = Fastify({ logger: true })
 
 fastify.get("/", async (request, reply) => {
@@ -163,10 +160,9 @@ const postItemOpts = {
   handler: addItem,
 }
 
-async function itemsRoute(fastify, options, done) {
+export async function itemsRoute(fastify, options) {
   fastify.get("/items", getItemsOpts)
   fastify.post("/items", postItemOpts)
-  done()
 }
 ```
 ```typescript
@@ -175,7 +171,6 @@ import itemsRoute from "./routes/items"
 
 fastify.register(itemsRoute)
 ```
-
 
 ## Middleware
 ```typescript
@@ -229,12 +224,7 @@ const Item = {
   },
 }
 
-/**
- * Encapsulates the routes
- * @param {FastifyInstance} fastify  Encapsulated Fastify Instance
- * @param {Object} options plugin options, refer to https://fastify.dev/docs/latest/Reference/Plugins/#plugin-options
- */
-async function helloRoute(fastify, options, done) {
+async function helloRoute(fastify, options) {
   fastify.get("/hello", async (request, reply) => {
     reply.send({ message: "Hello, World!" })
   })
@@ -242,8 +232,6 @@ async function helloRoute(fastify, options, done) {
   fastify.get("/hello/items", getItemsOpts, async (request, reply) => {
     reply.send({ items: ["item1", "item2"] })
   })
-
-  done()
 }
 
 export default helloRoute
