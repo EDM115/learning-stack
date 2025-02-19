@@ -1,8 +1,9 @@
 import Head from "next/head"
 import { nunitoSans } from "@/utils/fonts"
 import Navbar from "@/components/navbar"
-import { getGoals } from "../goals"
 import { Plus } from "lucide-react"
+import axios from "axios"
+import { getServerSideProps as getGoals, Goal } from "../goals"
 
 import {
   Table,
@@ -14,10 +15,39 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-function Sessions() {
-  const sessions = getSessions()
-  // for each goal in session.goals, goals.find((goal) => goal.id === 2) (we want the content)
+export type Session = {
+  id: number
+  day: string
+  time: string
+  duration: string
+  calories: number
+  goals: number[] | (Goal | undefined)[]
+}
 
+export async function getServerSideProps() {
+  const sessions = await axios
+    .get("http://localhost:3030/sessions")
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error fetching sessions :", error)
+      return []
+    })
+  
+  const { props: { goals } } = await getGoals()
+  sessions.forEach((session: Session) => {
+    session.goals = session.goals.map((goalId) =>
+      goals.find((goal) => goal.id === goalId)
+    )
+  })
+
+  return {
+    props: {
+      sessions: sessions as Session[]
+    }
+  }
+}
+
+function Sessions({ sessions }: { sessions: Session[] }) {
   return (
     <>
       <Head>
@@ -57,7 +87,10 @@ function Sessions() {
                   <TableCell>{session.duration}</TableCell>
                   <TableCell>{session.calories}</TableCell>
                   <TableCell>
-                    {session.goals.map((goal) => goal?.goal).join(", ")}
+                    {session.goals
+                      .filter((goal): goal is Goal => typeof goal !== "number")
+                      .map((goal) => goal.goal)
+                      .join(", ")}
                   </TableCell>
                 </TableRow>
               ))}

@@ -2,6 +2,7 @@ import Head from "next/head"
 import { nunitoSans } from "@/utils/fonts"
 import Navbar from "@/components/navbar"
 import { Plus, Pencil, X } from "lucide-react"
+import axios from "axios"
 
 import {
   Table,
@@ -13,9 +14,33 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-function Nutrition() {
-  const nutrition = getNutrition()
+export type Nutrition = {
+  id: number
+  day: string
+  meal: string
+  calories: number
+  proteins: number
+  carbs: number
+  fats: number
+}
 
+export async function getServerSideProps() {
+  const nutrition = await axios
+    .get("http://localhost:3030/nutrition")
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error fetching nutrition :", error)
+      return []
+    })
+
+  return {
+    props: {
+      nutrition: nutrition as Nutrition[]
+    }
+  }
+}
+
+function Nutrition({ nutrition }: { nutrition: Nutrition[] }) {
   return (
     <>
       <Head>

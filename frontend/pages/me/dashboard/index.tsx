@@ -1,9 +1,9 @@
 import Head from "next/head"
 import { nunitoSans } from "@/utils/fonts"
 import Navbar from "@/components/navbar"
-import { getSessions } from "../sessions"
-import { getGoals } from "../goals"
-import { getNutrition } from "../nutrition"
+import { getServerSideProps as getSessions, Session } from "../sessions"
+import { getServerSideProps as getGoals, Goal } from "../goals"
+import { getServerSideProps as getNutrition, Nutrition } from "../nutrition"
 
 import {
   Bar,
@@ -26,11 +26,21 @@ import {
   type ChartConfig
 } from "@/components/ui/chart"
 
-function Dashboard() {
-  const sessions = getSessions()
-  const goals = getGoals()
-  const nutrition = getNutrition()
+export async function getServerSideProps() {
+  const { props: { sessions } } = await getSessions()
+  const { props: { goals } } = await getGoals()
+  const { props: { nutrition } } = await getNutrition()
 
+  return {
+    props: {
+      sessions,
+      goals,
+      nutrition
+    }
+  }
+}
+
+function Dashboard({ sessions, goals, nutrition }: { sessions: Session[], goals: Goal[], nutrition: Nutrition[] }) {
   const sessionsChartData = sessions.map((session) => ({
     day: session.day,
     calories: session.calories
