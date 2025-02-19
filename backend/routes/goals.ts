@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify"
-import { getGoal, getGoals } from "../controllers/goals.ts"
+import { getGoal, getGoals } from "../controllers/goals.js"
 
 const Goal = {
   type: "object",

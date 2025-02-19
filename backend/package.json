@@ -26,11 +26,12 @@
   "name": "backend",
   "private": true,
   "scripts": {
+    "build": "tsc",
     "dev": "nodemon --watch server.ts --watch routes --watch controllers server.ts",
     "i": "npm i --no-audit --no-fund",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "start": "node server.ts"
+    "start": "node dist/server.js"
   },
   "type": "module",
   "version": "0.1.1"

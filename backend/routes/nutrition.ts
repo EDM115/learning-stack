@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify"
-import { getNutrition, getNutritions } from "../controllers/nutrition.ts"
+import { getNutrition, getNutritions } from "../controllers/nutrition.js"
 
 const Nutrition = {
   type: "object",

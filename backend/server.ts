@@ -2,11 +2,11 @@ import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUI from "@fastify/swagger-ui"
 import Fastify from "fastify"
 
-import { goalsRoute } from "./routes/goals.ts"
-import { nutritionRoute } from "./routes/nutrition.ts"
-import { sessionsRoute } from "./routes/sessions.ts"
+import { goalsRoute } from "./routes/goals.js"
+import { nutritionRoute } from "./routes/nutrition.js"
+import { sessionsRoute } from "./routes/sessions.js"
 
-import pkg from "./package.json" assert { type: "json" }
+const pkg = await import("./package.json", { with: { type: "json" } })
 
 const fastify = Fastify({ logger: true })
 const PORT = process.env.BACKEND_PORT ? parseInt(process.env.BACKEND_PORT, 10) : 3030
@@ -24,7 +24,7 @@ fastify.register(fastifySwagger, {
     info: {
       title: "TrackFit API",
       description: "Documentation d'API pour TrackFit",
-      version: pkg.version
+      version: pkg.default.version
     }
   }
 })

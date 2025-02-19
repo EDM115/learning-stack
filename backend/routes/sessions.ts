@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify"
-import { getSession, getSessions } from "../controllers/sessions.ts"
+import { getSession, getSessions } from "../controllers/sessions.js"
 
 const Session = {
   type: "object",
