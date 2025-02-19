@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify"
-import { getSessions } from "../controllers/sessions.ts"
+import { getSession, getSessions } from "../controllers/sessions.ts"
 
 const Session = {
   type: "object",
@@ -25,9 +25,26 @@ const getSessionsOpts = {
   handler: getSessions
 }
 
+const getSessionOpts = {
+  schema: {
+    params: {
+      type: "object",
+      required: [ "id" ],
+      properties: {
+        id: { type: "number" }
+      }
+    },
+    response: {
+      200: Session
+    }
+  },
+  handler: getSession
+}
+
 export async function sessionsRoute(
   fastify: FastifyInstance,
   _options: FastifyPluginOptions
 ) {
   fastify.get("/sessions", getSessionsOpts)
+  fastify.get("/sessions/:id", getSessionOpts)
 }
