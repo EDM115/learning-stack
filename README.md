@@ -7,7 +7,6 @@ React (Next.js), Fastify, Prisma, PostgreSQL and maybe InfluxDB
 ## Repo organization
 - `backend/` : Fastify, Prisma, PostgreSQL
 - `frontend/` : React (Next.js)
-- `influxdb/` : InfluxDB
 - `notes/` : Notes, helpful tips and learning remarks
 
 ## The project

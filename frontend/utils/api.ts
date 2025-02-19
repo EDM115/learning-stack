@@ -1,9 +1,11 @@
 import { Goal, Nutrition, Session } from "@/utils/types"
 import axios from "axios"
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3030"
+
 export async function getGoals() {
   const goals = await axios
-    .get("http://localhost:3030/goals")
+    .get(`${BACKEND_URL}/goals`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error fetching goals :", error)
@@ -15,7 +17,7 @@ export async function getGoals() {
 
 export async function getNutrition() {
   const nutrition = await axios
-    .get("http://localhost:3030/nutrition")
+    .get(`${BACKEND_URL}/nutrition`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error fetching nutrition :", error)
@@ -27,7 +29,7 @@ export async function getNutrition() {
 
 export async function getSessions() {
   const sessions = await axios
-    .get("http://localhost:3030/sessions")
+    .get(`${BACKEND_URL}/sessions`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error fetching sessions :", error)

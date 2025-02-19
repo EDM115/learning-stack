@@ -6,8 +6,10 @@ import { goalsRoute } from "./routes/goals.ts"
 import { nutritionRoute } from "./routes/nutrition.ts"
 import { sessionsRoute } from "./routes/sessions.ts"
 
+import pkg from "./package.json" assert { type: "json" }
+
 const fastify = Fastify({ logger: true })
-const PORT = 3030
+const PORT = process.env.BACKEND_PORT ? parseInt(process.env.BACKEND_PORT, 10) : 3030
 
 fastify.setErrorHandler((error, request, reply) => {
   reply.status(500).send({ error: "Internal Server Error" })
@@ -22,7 +24,7 @@ fastify.register(fastifySwagger, {
     info: {
       title: "TrackFit API",
       description: "Documentation d'API pour TrackFit",
-      version: "0.1.1"
+      version: pkg.version
     }
   }
 })
