@@ -3,7 +3,7 @@ import { nunitoSans } from "@/utils/fonts"
 import Navbar from "@/components/navbar"
 import { LoginForm } from "@/components/login-form"
 
-function Login() {
+export default function LoginPage() {
   return (
     <>
       <Head>
@@ -26,5 +26,3 @@ function Login() {
     </>
   )
 }
-
-export default Login

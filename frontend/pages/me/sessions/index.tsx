@@ -1,9 +1,9 @@
 import Head from "next/head"
+import { getGoals, getSessions } from "@/utils/api"
 import { nunitoSans } from "@/utils/fonts"
+import { Goal, Session } from "@/utils/types"
 import Navbar from "@/components/navbar"
 import { Plus } from "lucide-react"
-import axios from "axios"
-import { getServerSideProps as getGoals, Goal } from "../goals"
 
 import {
   Table,
@@ -15,25 +15,10 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-export type Session = {
-  id: number
-  day: string
-  time: string
-  duration: string
-  calories: number
-  goals: number[] | (Goal | undefined)[]
-}
-
 export async function getServerSideProps() {
-  const sessions = await axios
-    .get("http://localhost:3030/sessions")
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error fetching sessions :", error)
-      return []
-    })
+  const sessions = await getSessions()
+  const goals = await getGoals()
   
-  const { props: { goals } } = await getGoals()
   sessions.forEach((session: Session) => {
     session.goals = session.goals.map((goalId) =>
       goals.find((goal) => goal.id === goalId)
@@ -42,12 +27,12 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      sessions: sessions as Session[]
+      sessions
     }
   }
 }
 
-function Sessions({ sessions }: { sessions: Session[] }) {
+export default function SessionsPage({ sessions }: { sessions: Session[] }) {
   return (
     <>
       <Head>
@@ -101,5 +86,3 @@ function Sessions({ sessions }: { sessions: Session[] }) {
     </>
   )
 }
-
-export default Sessions

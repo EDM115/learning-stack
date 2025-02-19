@@ -1,8 +1,9 @@
 import Head from "next/head"
+import { getGoals } from "@/utils/api"
 import { nunitoSans } from "@/utils/fonts"
+import { Goal } from "@/utils/types"
 import Navbar from "@/components/navbar"
 import { Pencil, Plus, X } from "lucide-react"
-import axios from "axios"
 
 import {
   Table,
@@ -14,31 +15,17 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-export type Goal = {
-  id: number
-  goal: string
-  duration: string
-  calories: number
-  weight: number
-}
-
 export async function getServerSideProps() {
-  const goals = await axios
-    .get("http://localhost:3030/goals")
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error fetching goals:", error)
-      return []
-    })
+  const goals = await getGoals()
 
   return {
     props: {
-      goals: goals as Goal[]
+      goals
     }
   }
 }
 
-function Goals({ goals }: { goals: Goal[] }) {
+export default function GoalsPage({ goals }: { goals: Goal[] }) {
   return (
     <>
       <Head>
@@ -97,5 +84,3 @@ function Goals({ goals }: { goals: Goal[] }) {
     </>
   )
 }
-
-export default Goals

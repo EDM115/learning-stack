@@ -4,7 +4,7 @@ import Image from "next/image"
 import Navbar from "@/components/navbar"
 import { comfortaa } from "@/utils/fonts"
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Head>

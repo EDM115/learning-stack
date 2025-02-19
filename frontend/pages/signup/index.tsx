@@ -3,7 +3,7 @@ import { nunitoSans } from "@/utils/fonts"
 import Navbar from "@/components/navbar"
 import { SignupForm } from "@/components/signup-form"
 
-function Signup() {
+export default function SignupPage() {
   return (
     <>
       <Head>
@@ -26,5 +26,3 @@ function Signup() {
     </>
   )
 }
-
-export default Signup
