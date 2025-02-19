@@ -23,7 +23,7 @@ WORKDIR /app/backend/
 RUN npm run i && npm run build
 
 WORKDIR /app/frontend/
-RUN npm run i && npm run build
+RUN npm run i && NODE_ENV=production npm run build
 
 EXPOSE 56001
 EXPOSE 56000
