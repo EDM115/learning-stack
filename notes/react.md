@@ -199,12 +199,14 @@ export default Component;
 ```
 
 ## Ref hook
-Refs provide a way to access DOM nodes or React elements created in the render method.
+Refs provide a way to access DOM nodes or React elements created in the render method.  
+Refs doesn't trigger re-renders when the value changes, which makes it good for mutable values.
 ```tsx
 import { useRef } from "react";
 
 function Component() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const value = useRef(0);
 
   function handleClick() {
     inputRef.current.focus();
@@ -214,6 +216,7 @@ function Component() {
     <>
       <input type="text" ref={inputRef} />
       <button onClick={handleClick}>Focus input</button>
+      <button onClick={() => { value.current++; }}>{value.current}</button>
     </>
   );
 }
@@ -223,7 +226,62 @@ export default Component;
 
 ## Effect hook
 The effect hook adds the ability to perform side effects in function components, for example on component load.  
-Effects are code that reaches outside of React.
+Effects are code that reaches outside of React.  
+They are similar to Vue's `onMounted` and `onUnmounted`.
+```tsx
+import { useEffect } from "react";
+
+function Component() {
+  // This is ran every time the component's state changes
+  useEffect(() => {
+    console.log("Component mounted");
+  });
+
+  return (
+    <h1>Component</h1>
+  );
+}
+
+export default Component;
+```
+To run only on mount, we need to pass an empty array as second argument (dependencies).
+```tsx
+import { useEffect } from "react";
+
+function Component() {
+  useEffect(() => {
+    console.log("Component mounted");
+  }, []);
+
+  return (
+    <h1>Component</h1>
+  );
+}
+
+export default Component;
+```
+To run when a specific state changes, we need to pass that state as second argument.
+```tsx
+import { useEffect, useState } from "react";
+
+function Component() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("Count changed to " + count);
+  }, [count]);
+
+  return (
+    <>
+      <h1>Count : {count}</h1>
+      <button onClick={() => { setCount(count + 1); }}>Increment</button>
+    </>
+  );
+}
+
+export default Component;
+```
+To run when the component unmounts, we can return a function from the effect.
 ```tsx
 import { useEffect } from "react";
 
