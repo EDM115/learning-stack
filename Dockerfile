@@ -26,6 +26,7 @@ COPY . /app/
 RUN apk update && \
   apk upgrade --no-cache && \
   apk add --no-cache bash>=5.2.37-r0 git>=2.47.2-r0 postgresql17>=17.2-r0 && \
+  apk add --no-cache gosu --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main && \
   mkdir /run/postgresql && mkdir -p /var/lib/postgresql/data && \
   chown postgres:postgres /run/postgresql && \
   chown -R postgres:postgres /var/lib/postgresql && \
