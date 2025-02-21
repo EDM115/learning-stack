@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint"
 
 export default [
   {
-    ignores: [ "**/node_modules/*" ]
+    ignores: [ "**/node_modules/*", "**/dist/*" ]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -91,6 +91,7 @@ export default [
       "@stylistic/wrap-iife": [ "error", "outside" ],
       "@stylistic/wrap-regex": "error",
       "@stylistic/yield-star-spacing": [ "error", "before" ],
+      "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [ "warn" ],
       "curly": [ "error", "all" ],
       "no-unused-vars": [ "off" ]

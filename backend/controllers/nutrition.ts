@@ -22,9 +22,7 @@ export async function getNutrition(request: FastifyRequest, reply: FastifyReply)
     })
 
     if (!nutrition) {
-      reply.status(404).send({ message: "Ce repas n'a pas été trouvé" })
-
-      return
+      return reply.status(404).send({ message: "Ce repas n'a pas été trouvé" })
     }
 
     reply.send(nutrition)

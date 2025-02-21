@@ -22,9 +22,7 @@ export async function getGoal(request: FastifyRequest, reply: FastifyReply) {
     })
 
     if (!goal) {
-      reply.status(404).send({ message: "Cet objectif n'a pas été trouvé" })
-
-      return
+      return reply.status(404).send({ message: "Cet objectif n'a pas été trouvé" })
     }
 
     reply.send(goal)

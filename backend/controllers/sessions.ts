@@ -52,9 +52,7 @@ export async function getSession(request: FastifyRequest, reply: FastifyReply) {
     })
 
     if (!session) {
-      reply.status(404).send({ message: "Cette séance n'a pas été trouvée" })
-
-      return
+      return reply.status(404).send({ message: "Cette séance n'a pas été trouvée" })
     }
 
 

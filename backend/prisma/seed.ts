@@ -139,7 +139,8 @@ async function main() {
     data: {
       name: "Test",
       email: "test@test.com",
-      password: "azertyuiop",
+      // azertyuiop
+      password: "$2b$10$BR1ebvzqp0yzmRcCSLKn9.p.IHDiPeA9hxjSJC9IXsWBTZVy8PIea",
       goals: {
         connect: [
           { id: goal1.id },
