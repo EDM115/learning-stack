@@ -7,11 +7,17 @@ LABEL org.opencontainers.image.source="https://github.com/EDM115/learning-stack.
 LABEL org.opencontainers.image.title="TrackFit"
 LABEL org.opencontainers.image.url="https://github.com/EDM115/learning-stack.git"
 
+ARG POSTGRES_USER
+ARG POSTGRES_PASSWORD
+ARG POSTGRES_DB
+ARG POSTGRES_URL
+
 ENV BACKEND_PORT=56001
 ENV FRONTEND_PORT=56000
 ENV NEXT_TELEMETRY_DISABLED=1
 # Workaround for NPM not installing dev dependencies
 ENV NODE_ENV=development
+ENV POSTGRES_URL=${POSTGRES_URL}
 
 WORKDIR /app/
 
@@ -19,16 +25,30 @@ COPY . /app/
 
 RUN apk update && \
   apk upgrade --no-cache && \
-  apk add --no-cache bash>=5.2.37-r0 git>=2.47.2-r0
+  apk add --no-cache bash>=5.2.37-r0 git>=2.47.2-r0 postgresql17>=17.2-r0 && \
+  mkdir /run/postgresql && \
+  chown postgres:postgres /run/postgresql && \
+  chown -R postgres:postgres /var/lib/postgresql
+
+USER postgres
+RUN initdb -D /var/lib/postgresql/data && \
+  echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf && \
+  echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf
+
+USER root
+RUN rc-service postgresql start && \
+  su postgres -c "psql -c \"ALTER USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';\"" && \
+  su postgres -c "createdb ${POSTGRES_DB}"
 
 WORKDIR /app/backend/
-RUN npm run i && npm run build
+RUN npm run i && npm run build && npm run prisma:seed && npm run prisma:deploy
 
 WORKDIR /app/frontend/
 RUN npm run i && NODE_ENV=production npm run build
 
 EXPOSE 56001
 EXPOSE 56000
+EXPOSE 5432
 
 WORKDIR /app/
 ENV NODE_ENV=production

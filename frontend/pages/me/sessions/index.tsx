@@ -20,9 +20,11 @@ export async function getServerSideProps() {
   const goals = await getGoals()
   
   sessions.forEach((session: Session) => {
-    session.goals = session.goals.map((goalId) =>
-      goals.find((goal) => goal.id === goalId)
-    )
+    if (session.goals) {
+      session.goals = session.goals
+        .map((goalId) => goals.find((goal) => goal.id === goalId))
+        .filter((goal): goal is Goal => goal !== undefined)
+    }
   })
 
   return {
@@ -30,6 +32,20 @@ export async function getServerSideProps() {
       sessions
     }
   }
+}
+
+function formatDuration(duration: number) {
+  const hours = Math.floor(duration / 60)
+  const minutes = duration % 60
+
+  let result = ""
+  if (hours > 0) {
+    result += `${hours} heure${hours > 1 ? "s" : ""}`
+  }
+  if (minutes > 0) {
+    result += `${result ? " " : ""}${minutes} minute${minutes > 1 ? "s" : ""}`
+  }
+  return result
 }
 
 export default function SessionsPage({ sessions }: { sessions: Session[] }) {
@@ -67,14 +83,20 @@ export default function SessionsPage({ sessions }: { sessions: Session[] }) {
             <TableBody>
               {sessions.map((session, index) => (
                 <TableRow key={index}>
-                  <TableCell>{session.day}</TableCell>
-                  <TableCell>{session.time}</TableCell>
-                  <TableCell>{session.duration}</TableCell>
+                  <TableCell>
+                  {(() => {
+                    const date = new Date(session.date)
+                    const dayName = date.toLocaleDateString("fr-FR", { weekday: "long" }).charAt(0).toUpperCase() + date.toLocaleDateString("fr-FR", { weekday: "long" }).slice(1)
+                    return `${dayName} ${date.toLocaleDateString("fr-FR")}`
+                  })()}
+                  </TableCell>
+                  <TableCell>{new Date(session.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</TableCell>
+                  <TableCell>{formatDuration(session.duration)}</TableCell>
                   <TableCell>{session.calories}</TableCell>
                   <TableCell>
-                    {session.goals
+                    {(session.goals ?? [])
                       .filter((goal): goal is Goal => typeof goal !== "number")
-                      .map((goal) => goal.goal)
+                      .map((goal) => goal.title)
                       .join(", ")}
                   </TableCell>
                 </TableRow>

@@ -25,6 +25,20 @@ export async function getServerSideProps() {
   }
 }
 
+function formatDuration(duration: number) {
+  const months = Math.floor(duration / 30)
+  const weeks = Math.floor((duration % 30) / 7)
+  const days = duration % 7
+
+  if (months > 0) {
+    return `${months} mois`
+  } else if (weeks > 0) {
+    return `${weeks} semaines`
+  } else {
+    return `${days} jours`
+  }
+}
+
 export default function GoalsPage({ goals }: { goals: Goal[] }) {
   return (
     <>
@@ -59,10 +73,10 @@ export default function GoalsPage({ goals }: { goals: Goal[] }) {
             <TableBody>
               {goals.map((goal) => (
                 <TableRow key={goal.id}>
-                  <TableCell>{goal.goal}</TableCell>
-                  <TableCell>{goal.duration}</TableCell>
-                  <TableCell>{goal.calories}</TableCell>
-                  <TableCell>{goal.weight}</TableCell>
+                  <TableCell>{goal.title}</TableCell>
+                  <TableCell>{formatDuration(goal.duration)}</TableCell>
+                  <TableCell>{goal.calories} kCal</TableCell>
+                  <TableCell>{goal.weight} kg</TableCell>
                   <TableCell>
                     <Button size="icon">
                       <Pencil />

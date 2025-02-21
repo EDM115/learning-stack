@@ -1,26 +1,44 @@
-export type Goal = {
-  id: number
-  goal: string
-  duration: string
-  calories: number
-  weight: number
+export type User = {
+  id: string
+  name: string | null
+  email: string
+  password: string
+  goals?: Goal[]
+  meals?: Meal[]
+  sessions?: Session[]
 }
 
-export type Nutrition = {
-  id: number
-  day: string
-  meal: string
+export type Goal = {
+  id: string
+  title: string
+  completed: boolean
+  duration: number
   calories: number
-  proteins: number
+  weight: number
+  user?: User | null
+  userId: string | null
+  session?: Session[]
+}
+
+export type Meal = {
+  id: string
+  name: string
+  day: Date
+  calories: number
+  protein: number
   carbs: number
-  fats: number
+  fat: number
+  user?: User | null
+  userId: string | null
 }
 
 export type Session = {
-  id: number
-  day: string
-  time: string
-  duration: string
+  id: string
+  date: Date
+  duration: number
   calories: number
-  goals: number[] | (Goal | undefined)[]
+  weight: number
+  user?: User | null
+  userId: string | null
+  goals?: Goal[] | string[]
 }

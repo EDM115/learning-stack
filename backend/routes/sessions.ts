@@ -4,12 +4,12 @@ import { getSession, getSessions } from "../controllers/sessions.js"
 const Session = {
   type: "object",
   properties: {
-    id: { type: "number" },
-    day: { type: "string" },
-    time: { type: "string" },
+    id: { type: "string" },
+    date: { type: "string" },
     duration: { type: "string" },
     calories: { type: "number" },
-    goals: { type: "array", items: { type: "number" } }
+    weight: { type: "number" },
+    goals: { type: "array", items: { type: "string" } }
   }
 }
 
@@ -31,7 +31,7 @@ const getSessionOpts = {
       type: "object",
       required: [ "id" ],
       properties: {
-        id: { type: "number" }
+        id: { type: "string" }
       }
     },
     response: {

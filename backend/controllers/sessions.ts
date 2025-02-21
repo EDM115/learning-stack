@@ -1,45 +1,73 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-
-const sessions = [
-  {
-    id: 1,
-    day: "Lundi 10/02/2025",
-    time: "18h30",
-    duration: "1h",
-    calories: 300,
-    goals: [ 2 ]
-  },
-  {
-    id: 2,
-    day: "Mercredi 12/02/2025",
-    time: "18h30",
-    duration: "1h",
-    calories: 500,
-    goals: [ 3 ]
-  },
-  {
-    id: 3,
-    day: "Vendredi 14/02/2025",
-    time: "18h30",
-    duration: "1h",
-    calories: 400,
-    goals: [ 4 ]
-  }
-]
+import prisma from "../prisma/instance.js"
 
 export async function getSessions(request: FastifyRequest, reply: FastifyReply) {
-  reply.send(sessions)
+  try {
+    const sessions = await prisma.session.findMany({
+      select: {
+        id: true,
+        date: true,
+        duration: true,
+        calories: true,
+        weight: true,
+        goals: {
+          select: {
+            id: true
+          }
+        }
+      }
+    })
+
+    const formattedSessions = sessions.map((session) => ({
+      ...session,
+      goals: session.goals.map((goal) => goal.id)
+    }))
+
+    reply.send(formattedSessions)
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ message: "Erreur lors de la récupération des séances.", error })
+  }
 }
 
 export async function getSession(request: FastifyRequest, reply: FastifyReply) {
-  const { id } = request.params as { id: number }
-  const session = sessions.find((session) => session.id === id)
+  const { id } = request.params as { id: string }
 
-  if (!session) {
-    reply.status(404).send({ message: "Cette séance n'a pas été trouvée" })
+  try {
+    const session = await prisma.session.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        date: true,
+        duration: true,
+        calories: true,
+        weight: true,
+        goals: {
+          select: {
+            id: true
+          }
+        }
+      }
+    })
 
-    return
+    if (!session) {
+      reply.status(404).send({ message: "Cette séance n'a pas été trouvée" })
+
+      return
+    }
+
+
+    const formattedSession = {
+      ...session,
+      goals: session.goals.map((goal) => goal.id)
+    }
+
+    reply.send(formattedSession)
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ message: "Erreur lors de la récupération de la séance.", error })
   }
-
-  reply.send(session)
 }
+

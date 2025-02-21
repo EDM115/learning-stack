@@ -4,13 +4,13 @@ import { getNutrition, getNutritions } from "../controllers/nutrition.js"
 const Nutrition = {
   type: "object",
   properties: {
-    id: { type: "number" },
+    id: { type: "string" },
     day: { type: "string" },
-    meal: { type: "string" },
+    name: { type: "string" },
     calories: { type: "number" },
-    proteins: { type: "number" },
+    protein: { type: "number" },
     carbs: { type: "number" },
-    fats: { type: "number" }
+    fat: { type: "number" }
   }
 }
 
@@ -32,7 +32,7 @@ const getNutritionOpts = {
       type: "object",
       required: [ "id" ],
       properties: {
-        id: { type: "number" }
+        id: { type: "string" }
       }
     },
     response: {

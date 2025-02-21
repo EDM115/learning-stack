@@ -1,49 +1,36 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-
-const goals = [
-  {
-    id: 1,
-    goal: "Perdre du poids",
-    duration: "3 mois",
-    calories: 2000,
-    weight: 70
-  },
-  {
-    id: 2,
-    goal: "Prise de masse",
-    duration: "6 mois",
-    calories: 2500,
-    weight: 80
-  },
-  {
-    id: 3,
-    goal: "Séance cardio",
-    duration: "1 mois",
-    calories: 1500,
-    weight: 75
-  },
-  {
-    id: 4,
-    goal: "Musculation",
-    duration: "2 mois",
-    calories: 1800,
-    weight: 75
-  }
-]
+import prisma from "../prisma/instance.js"
 
 export async function getGoals(request: FastifyRequest, reply: FastifyReply) {
-  reply.send(goals)
+  try {
+    const goals = await prisma.goal.findMany()
+
+    reply.send(goals)
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ message: "Erreur lors de la récupération des objectifs.", error })
+  }
 }
 
 export async function getGoal(request: FastifyRequest, reply: FastifyReply) {
-  const { id } = request.params as { id: number }
-  const goal = goals.find((goal) => goal.id === id)
+  const { id } = request.params as { id: string }
 
-  if (!goal) {
-    reply.status(404).send({ message: "Cet objectif n'a pas été trouvé" })
+  try {
+    const goal = await prisma.goal.findUnique({
+      where: { id }
+    })
 
-    return
+    if (!goal) {
+      reply.status(404).send({ message: "Cet objectif n'a pas été trouvé" })
+
+      return
+    }
+
+    reply.send(goal)
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ message: "Erreur lors de la récupération de l'objectif.", error })
   }
-
-  reply.send(goal)
 }

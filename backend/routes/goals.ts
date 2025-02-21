@@ -4,8 +4,9 @@ import { getGoal, getGoals } from "../controllers/goals.js"
 const Goal = {
   type: "object",
   properties: {
-    id: { type: "number" },
-    goal: { type: "string" },
+    id: { type: "string" },
+    title: { type: "string" },
+    completed: { type: "boolean" },
     duration: { type: "string" },
     calories: { type: "number" },
     weight: { type: "number" }
@@ -30,7 +31,7 @@ const getGoalOpts = {
       type: "object",
       required: [ "id" ],
       properties: {
-        id: { type: "number" }
+        id: { type: "string" }
       }
     },
     response: {

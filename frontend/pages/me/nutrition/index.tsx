@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { getNutrition } from "@/utils/api"
 import { nunitoSans } from "@/utils/fonts"
-import { Nutrition } from "@/utils/types"
+import { Meal } from "@/utils/types"
 import Navbar from "@/components/navbar"
 import { Plus, Pencil, X } from "lucide-react"
 
@@ -25,7 +25,7 @@ export async function getServerSideProps() {
   }
 }
 
-export default function NutritionPage({ nutrition }: { nutrition: Nutrition[] }) {
+export default function NutritionPage({ nutrition }: { nutrition: Meal[] }) {
   return (
     <>
       <Head>
@@ -53,21 +53,27 @@ export default function NutritionPage({ nutrition }: { nutrition: Nutrition[] })
                 <TableHead>Jour</TableHead>
                 <TableHead>Repas</TableHead>
                 <TableHead>Calories</TableHead>
-                <TableHead>Protéines (g)</TableHead>
-                <TableHead>Glucides (g)</TableHead>
-                <TableHead>Lipides (g)</TableHead>
+                <TableHead>Protéines</TableHead>
+                <TableHead>Glucides</TableHead>
+                <TableHead>Lipides</TableHead>
                 <TableHead>Options</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {nutrition.map((entry) => (
                 <TableRow key={entry.id}>
-                  <TableCell>{entry.day}</TableCell>
-                  <TableCell>{entry.meal}</TableCell>
-                  <TableCell>{entry.calories}</TableCell>
-                  <TableCell>{entry.proteins}</TableCell>
-                  <TableCell>{entry.carbs}</TableCell>
-                  <TableCell>{entry.fats}</TableCell>
+                    <TableCell>
+                    {(() => {
+                      const date = new Date(entry.day)
+                      const dayName = date.toLocaleDateString("fr-FR", { weekday: "long" }).charAt(0).toUpperCase() + date.toLocaleDateString("fr-FR", { weekday: "long" }).slice(1)
+                      return `${dayName} ${date.toLocaleDateString("fr-FR")}`
+                    })()}
+                    </TableCell>
+                  <TableCell>{entry.name}</TableCell>
+                  <TableCell>{entry.calories} kCal</TableCell>
+                  <TableCell>{entry.protein} g</TableCell>
+                  <TableCell>{entry.carbs} g</TableCell>
+                  <TableCell>{entry.fat} g</TableCell>
                   <TableCell>
                     <Button size="icon">
                       <Pencil />

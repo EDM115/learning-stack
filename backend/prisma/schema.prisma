@@ -10,13 +10,13 @@ generator class_validator {
 
 generator typescriptInterfaces {
   provider      = "prisma-generator-typescript-interfaces"
-  output        = "./tsInterfaces"
+  output        = "./tsInterfaces/interfaces.ts"
   headerComment = ""
 }
 
 generator typescriptTypes {
   provider      = "prisma-generator-typescript-interfaces"
-  output        = "./tsTypes"
+  output        = "./tsTypes/types.ts"
   headerComment = ""
   modelType     = "type"
 }
@@ -24,4 +24,49 @@ generator typescriptTypes {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(cuid())
+  name     String?
+  email    String    @unique
+  password String
+  goals    Goal[]
+  meals    Meal[]
+  sessions Session[]
+}
+
+model Goal {
+  id        String    @id @default(uuid())
+  title     String
+  completed Boolean   @default(false)
+  duration  Int
+  calories  Int
+  weight    Int
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+  session   Session[]
+}
+
+model Meal {
+  id       String   @id @default(uuid())
+  name     String
+  day      DateTime
+  calories Int
+  protein  Int
+  carbs    Int
+  fat      Int
+  user     User?    @relation(fields: [userId], references: [id])
+  userId   String?
+}
+
+model Session {
+  id       String   @id @default(uuid())
+  date     DateTime
+  duration Int
+  calories Int
+  weight   Int
+  user     User?    @relation(fields: [userId], references: [id])
+  userId   String?
+  goals    Goal[]
 }

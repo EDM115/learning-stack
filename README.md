@@ -91,7 +91,12 @@ I was supposed to make it in 4 weeks, but life's not predictable and I'm left wi
 2) Have Node 23 and PostgreSQL installed
 3) Create a `.env` file in the `backend/` folder and add the following variables :
 ```env
-DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database>
+POSTGRES_USER=<username>
+POSTGRES_PASSWORD=<password>
+POSTGRES_DB=<database>
+POSTGRES_PORT=5432
+POSTGRES_HOST=localhost
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
 JWT_SECRET=<secret>
 ```
 The JWT can be generated with `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`.
@@ -101,7 +106,6 @@ The JWT can be generated with `node -e "console.log(require('crypto').randomByte
 cd backend
 npm run i
 npm run prisma:seed
-npm run prisma:deploy
 npm run prisma:migrate
 npm run dev
 ```
@@ -118,7 +122,6 @@ npm run i
 npm run build
 npm run prisma:seed
 npm run prisma:deploy
-npm run prisma:migrate
 npm run start
 ```
 ```pwsh
@@ -130,6 +133,6 @@ npm run start
 
 ### Deploy
 ```pwsh
-docker build -t edm115/trackfit .
+docker build --env-file backend/.env -t edm115/trackfit .
 docker run -d -p 56000:56000 -p 56001:56001 --name trackfit edm115/trackfit
 ```

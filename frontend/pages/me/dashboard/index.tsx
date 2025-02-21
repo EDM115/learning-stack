@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { getGoals, getNutrition, getSessions } from "@/utils/api"
 import { nunitoSans } from "@/utils/fonts"
-import { Goal, Nutrition, Session } from "@/utils/types"
+import { Goal, Meal, Session } from "@/utils/types"
 import Navbar from "@/components/navbar"
 
 import {
@@ -39,11 +39,15 @@ export async function getServerSideProps() {
   }
 }
 
-export default function DashboardPage({ sessions, goals, nutrition }: { sessions: Session[], goals: Goal[], nutrition: Nutrition[] }) {
-  const sessionsChartData = sessions.map((session) => ({
-    day: session.day,
-    calories: session.calories
-  }))
+export default function DashboardPage({ sessions, goals, nutrition }: { sessions: Session[], goals: Goal[], nutrition: Meal[] }) {
+  const sessionsChartData = sessions.map((session) => {
+    const date = new Date(session.date)
+    const dayName = date.toLocaleDateString("fr-FR", { weekday: "long" }).charAt(0).toUpperCase() + date.toLocaleDateString("fr-FR", { weekday: "long" }).slice(1)
+    return {
+      day: `${dayName} ${date.toLocaleDateString("fr-FR")}`,
+      calories: session.calories
+    }
+  })
 
   const sessionsChartConfig: ChartConfig = {
     calories: {
@@ -53,7 +57,7 @@ export default function DashboardPage({ sessions, goals, nutrition }: { sessions
   }
 
   const goalsChartData = goals.map((goal) => ({
-    goal: goal.goal,
+    goal: goal.title,
     calories: goal.calories
   }))
 
@@ -68,7 +72,7 @@ export default function DashboardPage({ sessions, goals, nutrition }: { sessions
     {
       key: "proteins",
       label: "Protéines",
-      value: nutrition.reduce((acc, item) => acc + item.proteins, 0)
+      value: nutrition.reduce((acc, item) => acc + item.protein, 0)
     },
     {
       key: "carbs",
@@ -78,7 +82,7 @@ export default function DashboardPage({ sessions, goals, nutrition }: { sessions
     {
       key: "fats",
       label: "Lipides",
-      value: nutrition.reduce((acc, item) => acc + item.fats, 0)
+      value: nutrition.reduce((acc, item) => acc + item.fat, 0)
     }
   ]
 
