@@ -31,14 +31,13 @@ RUN apk update && \
   chown -R postgres:postgres /var/lib/postgresql
 
 USER postgres
-RUN initdb -D /var/lib/postgresql/data && \
-  echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf && \
-  echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf
-
-USER root
-RUN rc-service postgresql start && \
-  su postgres -c "psql -c \"ALTER USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';\"" && \
-  su postgres -c "createdb ${POSTGRES_DB}"
+RUN /usr/bin/initdb -D /var/lib/postgresql/data && \
+    echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf && \
+    echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf && \
+    /usr/bin/pg_ctl -D /var/lib/postgresql/data start && \
+    psql -c "ALTER USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';" && \
+    createdb ${POSTGRES_DB} && \
+    /usr/bin/pg_ctl -D /var/lib/postgresql/data stop
 
 WORKDIR /app/backend/
 RUN npm run i && npm run build && npm run prisma:seed && npm run prisma:deploy

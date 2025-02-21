@@ -133,6 +133,13 @@ npm run start
 
 ### Deploy
 ```pwsh
-docker build --env-file backend/.env -t edm115/trackfit .
-docker run -d -p 56000:56000 -p 56001:56001 --name trackfit edm115/trackfit
+export $(grep -v '^#' backend/.env | xargs) && \
+docker build \
+  --build-arg POSTGRES_USER=$POSTGRES_USER \
+  --build-arg POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+  --build-arg POSTGRES_DB=$POSTGRES_DB \
+  --build-arg POSTGRES_URL=$POSTGRES_URL \
+  -t edm115/trackfit \
+  .
+docker run -d -p 56000:56000 -p 56001:56001 --env-file backend/.env --name trackfit edm115/trackfit
 ```
