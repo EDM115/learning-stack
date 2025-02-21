@@ -15,9 +15,9 @@ ARG POSTGRES_URL
 ENV BACKEND_PORT=56001
 ENV FRONTEND_PORT=56000
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV POSTGRES_URL=${POSTGRES_URL}
 # Workaround for NPM not installing dev dependencies
 ENV NODE_ENV=development
-ENV POSTGRES_URL=${POSTGRES_URL}
 
 WORKDIR /app/
 
@@ -31,6 +31,7 @@ RUN apk update && \
   chown -R postgres:postgres /var/lib/postgresql
 
 USER postgres
+
 RUN /usr/bin/initdb -D /var/lib/postgresql/data && \
     echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf && \
     echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf && \
@@ -39,10 +40,18 @@ RUN /usr/bin/initdb -D /var/lib/postgresql/data && \
     createdb ${POSTGRES_DB} && \
     /usr/bin/pg_ctl -D /var/lib/postgresql/data stop
 
+USER root
+
+RUN chown -R node:node /app
+
+USER node
+
 WORKDIR /app/backend/
+
 RUN npm run i && npm run build && npm run prisma:seed && npm run prisma:deploy
 
 WORKDIR /app/frontend/
+
 RUN npm run i && NODE_ENV=production npm run build
 
 EXPOSE 56001
@@ -50,7 +59,9 @@ EXPOSE 56000
 EXPOSE 5432
 
 WORKDIR /app/
+
 ENV NODE_ENV=production
+
 RUN chmod +x start.sh
 
 ENTRYPOINT ["/bin/bash", "start.sh"]
