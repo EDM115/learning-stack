@@ -26,9 +26,10 @@ COPY . /app/
 RUN apk update && \
   apk upgrade --no-cache && \
   apk add --no-cache bash>=5.2.37-r0 git>=2.47.2-r0 postgresql17>=17.2-r0 && \
-  mkdir /run/postgresql && \
+  mkdir /run/postgresql && mkdir -p /var/lib/postgresql/data && \
   chown postgres:postgres /run/postgresql && \
-  chown -R postgres:postgres /var/lib/postgresql
+  chown -R postgres:postgres /var/lib/postgresql && \
+  chmod 700 /var/lib/postgresql/data
 
 USER postgres
 
