@@ -1,8 +1,10 @@
 import Head from "next/head"
 import { getGoals, getNutrition, getSessions } from "@/utils/api"
+import { getAuthToken } from "@/utils/cookies"
 import { nunitoSans } from "@/utils/fonts"
 import { Goal, Meal, Session } from "@/utils/types"
 import Navbar from "@/components/navbar"
+import { withAuth } from "@/utils/withAuth"
 
 import {
   Bar,
@@ -24,22 +26,43 @@ import {
   ChartLegendContent,
   type ChartConfig
 } from "@/components/ui/chart"
+import { GetServerSidePropsContext } from "next"
 
-export async function getServerSideProps() {
-  const sessions = await getSessions()
-  const goals = await getGoals()
-  const nutrition = await getNutrition()
+export async function getServerSideProps(context: GetServerSidePropsContext | undefined) {
+  const token = getAuthToken(context)
+  
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+  }
 
-  return {
-    props: {
-      sessions,
-      goals,
-      nutrition
+  try {
+    const sessions = await getSessions()
+    const goals = await getGoals()
+    const nutrition = await getNutrition()
+
+    return {
+      props: {
+        sessions,
+        goals,
+        nutrition
+      }
+    }
+  } catch (error) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
     }
   }
 }
 
-export default function DashboardPage({ sessions, goals, nutrition }: { sessions: Session[], goals: Goal[], nutrition: Meal[] }) {
+function DashboardPage({ sessions, goals, nutrition }: { sessions: Session[], goals: Goal[], nutrition: Meal[] }) {
   const sessionsChartData = sessions.map((session) => {
     const date = new Date(session.date)
     const dayName = date.toLocaleDateString("fr-FR", { weekday: "long" }).charAt(0).toUpperCase() + date.toLocaleDateString("fr-FR", { weekday: "long" }).slice(1)
@@ -201,3 +224,5 @@ export default function DashboardPage({ sessions, goals, nutrition }: { sessions
     </>
   )
 }
+
+export default withAuth(DashboardPage)
