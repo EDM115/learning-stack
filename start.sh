@@ -2,7 +2,20 @@
 set -e
 set -u
 
+(/usr/bin/pg_ctl -D /var/lib/postgresql/data start) &
+
 BACKEND_URL="http://localhost:${BACKEND_PORT}"
+
+check_db_initialized() {
+  psql -U $POSTGRES_USER -d $POSTGRES_DB -tAc "SELECT 1 FROM information_schema.tables WHERE table_name = 'Goal'" | grep -q 1
+}
+
+if ! check_db_initialized; then
+  cd backend
+  npm run prisma:deploy
+  npm run prisma:seed
+  cd ..
+fi
 
 echo "Starting backend on port ${BACKEND_PORT}..."
 (cd backend && npm run start) &
