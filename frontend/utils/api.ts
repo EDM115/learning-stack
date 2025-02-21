@@ -1,4 +1,4 @@
-import { Goal, Nutrition, Session } from "@/utils/types"
+import { Goal, Meal, Session } from "@/utils/types"
 import axios from "axios"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3030"
@@ -24,7 +24,7 @@ export async function getNutrition() {
       return []
     })
 
-  return nutrition as Nutrition[]
+  return nutrition as Meal[]
 }
 
 export async function getSessions() {
