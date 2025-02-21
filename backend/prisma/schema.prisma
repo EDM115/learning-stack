@@ -1,0 +1,27 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+generator class_validator {
+  provider = "prisma-class-validator-generator"
+  output   = "./tsClasses"
+}
+
+generator typescriptInterfaces {
+  provider      = "prisma-generator-typescript-interfaces"
+  output        = "./tsInterfaces"
+  headerComment = ""
+}
+
+generator typescriptTypes {
+  provider      = "prisma-generator-typescript-interfaces"
+  output        = "./tsTypes"
+  headerComment = ""
+  modelType     = "type"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

@@ -10,6 +10,7 @@ LABEL org.opencontainers.image.url="https://github.com/EDM115/learning-stack.git
 ENV BACKEND_PORT=56001
 ENV FRONTEND_PORT=56000
 ENV NEXT_TELEMETRY_DISABLED=1
+# Workaround for NPM not installing dev dependencies
 ENV NODE_ENV=development
 
 WORKDIR /app/
