@@ -66,4 +66,6 @@ ENV NODE_ENV=production
 
 RUN chmod +x start.sh
 
+USER root
+
 ENTRYPOINT ["/bin/bash", "start.sh"]
