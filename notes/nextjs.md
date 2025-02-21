@@ -9,7 +9,7 @@ We're using the pages router here.
 - `public/` contains static assets like images and fonts.
 - `styles/` contains global styles for the app.
 - `eslint.config.mjs` contains the ESLint configuration.
-- [`next.config.ts`](https://nextjs.org/docs/app/api-reference/config/next-config-js) contains the configuration for Next.js.
+- [`next.config.ts`](https://nextjs.org/docs/pages/api-reference/config/next-config-js) contains the configuration for Next.js.
 - `postcss.config.mjs` contains the configuration for PostCSS.
 - `tailwind.config.ts` contains the configuration for Tailwind CSS.
 - `tsconfig.json` contains the configuration for TypeScript.
