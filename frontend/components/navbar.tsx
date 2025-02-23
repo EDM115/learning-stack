@@ -8,8 +8,9 @@ import {
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu"
 import { nunitoSans } from "@/utils/fonts"
+import { useAuth } from "@/utils/hooks"
 
-import { Moon, Sun } from "lucide-react"
+import { Loader2, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
@@ -128,8 +129,24 @@ export function ModeToggle() {
 export default function Navbar() {
   const router = useRouter()
   const currentPage = router.pathname
+  const { isAuthenticated, isLoading, logout } = useAuth()
   const selectedClasses =
     navigationMenuTriggerStyle() + " bg-accent text-accent-foreground"
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center w-full mb-8">
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Loader2 className="animate-spin" />
+            </NavigationMenuItem>
+          </NavigationMenuList>
+          <ModeToggle />
+        </NavigationMenu>
+      </div>
+    )
+  }
 
   return (
     <div className="flex justify-center w-full mb-8">
@@ -152,51 +169,64 @@ export default function Navbar() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger
-              className={
-                currentPage.includes("/me")
-                  ? selectedClasses
-                  : navigationMenuTriggerStyle()
-              }
-            >
-              Mon profil
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 grid-cols-1">
-                {monProfil.map((optionProfil) => (
-                  <ListItem
-                    key={optionProfil.title}
-                    title={optionProfil.title}
-                    href={optionProfil.href}
-                    className={
-                      currentPage === optionProfil.href
-                        ? "bg-accent text-accent-foreground"
-                        : ""
-                    }
-                  >
-                    {optionProfil.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link
-              href={currentPage === "/login" ? "" : "/login"}
-              legacyBehavior
-              passHref
-            >
-              <NavigationMenuLink
+
+          {isAuthenticated && (
+            <NavigationMenuItem>
+              <NavigationMenuTrigger
                 className={
-                  currentPage === "/login"
+                  currentPage.includes("/me")
                     ? selectedClasses
                     : navigationMenuTriggerStyle()
                 }
               >
-                Connexion
-              </NavigationMenuLink>
-            </Link>
+                Mon profil
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 grid-cols-1">
+                  {monProfil.map((optionProfil) => (
+                    <ListItem
+                      key={optionProfil.title}
+                      title={optionProfil.title}
+                      href={optionProfil.href}
+                      className={
+                        currentPage === optionProfil.href
+                          ? "bg-accent text-accent-foreground"
+                          : ""
+                      }
+                    >
+                      {optionProfil.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          )}
+
+          <NavigationMenuItem>
+            {isAuthenticated ? (
+              <button
+                onClick={logout}
+                className={navigationMenuTriggerStyle()}
+              >
+                Déconnexion
+              </button>
+            ) : (
+              <Link
+                href={currentPage === "/login" ? "" : "/login"}
+                legacyBehavior
+                passHref
+              >
+                <NavigationMenuLink
+                  className={
+                    currentPage === "/login"
+                      ? selectedClasses
+                      : navigationMenuTriggerStyle()
+                  }
+                >
+                  Connexion
+                </NavigationMenuLink>
+              </Link>
+            )}
           </NavigationMenuItem>
         </NavigationMenuList>
         <ModeToggle />
