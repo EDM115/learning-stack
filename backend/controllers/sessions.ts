@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-import prisma from "../prisma/instance.js"
+import { fastify } from "../server.js"
 
-export async function getSessions(request: FastifyRequest, reply: FastifyReply) {
+export async function getSessions(_request: FastifyRequest, reply: FastifyReply) {
   try {
-    const sessions = await prisma.session.findMany({
+    const sessions = await fastify.prisma.session.findMany({
       select: {
         id: true,
         date: true,
@@ -25,9 +25,7 @@ export async function getSessions(request: FastifyRequest, reply: FastifyReply) 
 
     reply.send(formattedSessions)
   } catch (error) {
-    reply
-      .status(500)
-      .send({ message: "Erreur lors de la récupération des séances.", error })
+    reply.internalServerError(`Erreur lors de la récupération des séances : ${error}`)
   }
 }
 
@@ -35,7 +33,7 @@ export async function getSession(request: FastifyRequest, reply: FastifyReply) {
   const { id } = request.params as { id: string }
 
   try {
-    const session = await prisma.session.findUnique({
+    const session = await fastify.prisma.session.findUnique({
       where: { id },
       select: {
         id: true,
@@ -52,7 +50,7 @@ export async function getSession(request: FastifyRequest, reply: FastifyReply) {
     })
 
     if (!session) {
-      return reply.status(404).send({ message: "Cette séance n'a pas été trouvée" })
+      return reply.notFound("Cette séance n'a pas été trouvée")
     }
 
 
@@ -63,9 +61,7 @@ export async function getSession(request: FastifyRequest, reply: FastifyReply) {
 
     reply.send(formattedSession)
   } catch (error) {
-    reply
-      .status(500)
-      .send({ message: "Erreur lors de la récupération de la séance.", error })
+    reply.internalServerError(`Erreur lors de la récupération de la séance : ${error}`)
   }
 }
 

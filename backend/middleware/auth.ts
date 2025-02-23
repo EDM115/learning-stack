@@ -5,9 +5,7 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply,
     const token = request.headers.authorization?.replace("Bearer ", "")
 
     if (!token) {
-      reply.status(401).send({ message: "Token d'authentification manquant" })
-
-      return
+      return reply.unauthorized("Token d'authentification manquant")
     }
 
     try {
@@ -16,9 +14,9 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply,
       request.user = decoded
       next()
     } catch (error) {
-      reply.status(401).send({ message: "Token d'authentification invalide", error })
+      reply.unauthorized(`Token d'authentification invalide : ${error}`)
     }
   } catch (error) {
-    reply.status(500).send({ message: "Erreur d'authentification", error })
+    reply.internalServerError(`Erreur d'authentification, ${error}`)
   }
 }

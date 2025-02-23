@@ -1,14 +1,13 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-import prisma from "../prisma/instance.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { JWT_SECRET } from "../server.js"
+import { fastify, JWT_SECRET } from "../server.js"
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { email, password, name } = request.body as { email: string; password: string; name?: string }
 
   try {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await fastify.prisma.user.findUnique({
       where: { email }
     })
 
@@ -16,10 +15,10 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       return reply.status(400).send({ message: "Un utilisateur existe déjà avec cet email" })
     }
 
-    const salt = bcrypt.genSaltSync(10)
+    const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const user = await prisma.user.create({
+    const user = await fastify.prisma.user.create({
       data: {
         email,
         password: hashedPassword,
@@ -36,7 +35,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     reply.send({ user, token })
   } catch (error) {
-    reply.status(500).send({ message: "Erreur lors de l'inscription", error })
+    reply.internalServerError(`Erreur lors de l'inscription : ${error}`)
   }
 }
 
@@ -44,18 +43,18 @@ export async function login(request: FastifyRequest, reply: FastifyReply) {
   const { email, password } = request.body as { email: string; password: string }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await fastify.prisma.user.findUnique({
       where: { email }
     })
 
     if (!user) {
-      return reply.status(401).send({ message: "Email ou mot de passe incorrect" })
+      return reply.unauthorized("Email ou mot de passe incorrect")
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password)
 
     if (!isValidPassword) {
-      return reply.status(401).send({ message: "Email ou mot de passe incorrect" })
+      return reply.unauthorized("Email ou mot de passe incorrect")
     }
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "7d" })
@@ -68,7 +67,7 @@ export async function login(request: FastifyRequest, reply: FastifyReply) {
 
     reply.send({ user: userWithoutPassword, token })
   } catch (error) {
-    reply.status(500).send({ message: "Erreur lors de la connexion", error })
+    reply.internalServerError(`Erreur lors de la connexion : ${error}`)
   }
 }
 
@@ -77,7 +76,7 @@ export async function getMe(request: FastifyRequest, reply: FastifyReply) {
   const userId = user.userId
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await fastify.prisma.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
@@ -87,11 +86,11 @@ export async function getMe(request: FastifyRequest, reply: FastifyReply) {
     })
 
     if (!user) {
-      return reply.status(404).send({ message: "Utilisateur non trouvé" })
+      return reply.notFound("Utilisateur non trouvé")
     }
 
     reply.send({ user })
   } catch (error) {
-    reply.status(500).send({ message: "Erreur lors de la récupération du profil", error })
+    reply.internalServerError(`Erreur lors de la récupération du profil : ${error}`)
   }
 }
