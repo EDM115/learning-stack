@@ -14,6 +14,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { withAuth } from "@/utils/withAuth"
 
 export async function getServerSideProps() {
   const nutrition = await getNutrition()
@@ -25,7 +26,7 @@ export async function getServerSideProps() {
   }
 }
 
-export default function NutritionPage({ nutrition }: { nutrition: Meal[] }) {
+function NutritionPage({ nutrition }: { nutrition: Meal[] }) {
   return (
     <>
       <Head>
@@ -95,3 +96,5 @@ export default function NutritionPage({ nutrition }: { nutrition: Meal[] }) {
     </>
   )
 }
+
+export default withAuth(NutritionPage)

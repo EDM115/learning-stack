@@ -25,8 +25,9 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
     if (isLoading) {
       return <>
         <div className="flex flex-col items-center justify-center h-screen">
-          <h1 className="text-2xl font-bold">Chargement...</h1>
-          <Skeleton className="w-96 h-96 mt-4" />
+          <Skeleton className="w-96 h-96 mt-4 flex items-center justify-center">
+            <h1 className="text-2xl font-bold">Chargement...</h1>
+          </Skeleton>
         </div>
       </>
     }

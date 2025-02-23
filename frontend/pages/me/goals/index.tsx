@@ -14,6 +14,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { withAuth } from "@/utils/withAuth"
 
 export async function getServerSideProps() {
   const goals = await getGoals()
@@ -39,7 +40,7 @@ function formatDuration(duration: number) {
   }
 }
 
-export default function GoalsPage({ goals }: { goals: Goal[] }) {
+function GoalsPage({ goals }: { goals: Goal[] }) {
   return (
     <>
       <Head>
@@ -98,3 +99,5 @@ export default function GoalsPage({ goals }: { goals: Goal[] }) {
     </>
   )
 }
+
+export default withAuth(GoalsPage)

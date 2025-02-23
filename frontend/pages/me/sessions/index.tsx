@@ -14,6 +14,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { withAuth } from "@/utils/withAuth"
 
 export async function getServerSideProps() {
   const sessions = await getSessions()
@@ -48,7 +49,7 @@ function formatDuration(duration: number) {
   return result
 }
 
-export default function SessionsPage({ sessions }: { sessions: Session[] }) {
+function SessionsPage({ sessions }: { sessions: Session[] }) {
   return (
     <>
       <Head>
@@ -108,3 +109,5 @@ export default function SessionsPage({ sessions }: { sessions: Session[] }) {
     </>
   )
 }
+
+export default withAuth(SessionsPage)
