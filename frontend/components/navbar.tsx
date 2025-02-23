@@ -212,18 +212,18 @@ export default function Navbar() {
               </button>
             ) : (
               <Link
-                href={currentPage === "/login" ? "" : "/login"}
+                href={(currentPage === "/login" || currentPage === "/signup") ? "" : "/login"}
                 legacyBehavior
                 passHref
               >
                 <NavigationMenuLink
                   className={
-                    currentPage === "/login"
+                    (currentPage === "/login" || currentPage === "/signup")
                       ? selectedClasses
                       : navigationMenuTriggerStyle()
                   }
                 >
-                  Connexion
+                  {currentPage === "/login" ? "Connexion" : "Inscription"}
                 </NavigationMenuLink>
               </Link>
             )}
