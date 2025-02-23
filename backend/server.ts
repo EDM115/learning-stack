@@ -25,7 +25,11 @@ export const JWT_SECRET = process.env.JWT_SECRET || randomBytes(64).toString("he
 
 await fastify.register(fastifySensible)
 
-fastify.setErrorHandler((_error, _request, reply) => {
+fastify.setErrorHandler((error, _request, reply) => {
+  if (error.message) {
+    return reply.internalServerError(error.message)
+  }
+
   reply.internalServerError("Erreur interne du serveur")
 })
 

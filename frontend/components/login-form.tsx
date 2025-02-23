@@ -75,7 +75,7 @@ export function LoginForm({
               </div>
             </div>
           </form>
-          <div className="bg-muted relative hidden md:block">
+          <div className="bg-muted relative hidden md:block aspect-square">
             <Image
               src="/trackfit_upscaled.png"
               width={500}
